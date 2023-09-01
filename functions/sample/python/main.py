@@ -3,10 +3,10 @@
 Returns:
     List: List of reviews for the given dealership
 """
+import os
 from cloudant.client import Cloudant
 from cloudant.error import CloudantException
 import requests
-
 
 def main(param_dict):
     """Main Function
@@ -15,21 +15,33 @@ def main(param_dict):
         param_dict (Dict): input paramater
 
     Returns:
-        _type_: _description_ TODO
+        Dict: Dictionary containing the list of databases or an error message
     """
-
     try:
         client = Cloudant.iam(
-            account_name=param_dict["COUCH_USERNAME"],
-            api_key=param_dict["IAM_API_KEY"],
+            account_name=param_dict["account_name"],
+            api_key=param_dict["api_key"],
             connect=True,
         )
-        print(f"Databases: {client.all_dbs()}")
+        return {"dbs": client.all_dbs()}
     except CloudantException as cloudant_exception:
-        print("unable to connect")
-        return {"error": cloudant_exception}
+        print("Unable to connect to Cloudant.")
+        return {"error": str(cloudant_exception)}
     except (requests.exceptions.RequestException, ConnectionResetError) as err:
-        print("connection error")
-        return {"error": err}
+        print("Connection error.")
+        return {"error": str(err)}
 
-    return {"dbs": client.all_dbs()}
+if __name__ == "__main__":
+    # Fetch environment variables for Cloudant account name and API key
+    ACCOUNT_NAME = os.environ.get('CLOUDANT_ACCOUNT_NAME')
+    API_KEY = os.environ.get('CLOUDANT_API_KEY')
+
+    if not ACCOUNT_NAME or not API_KEY:
+        print("Ensure CLOUDANT_ACCOUNT_NAME and CLOUDANT_API_KEY environment variables are set.")
+        exit(1)
+
+    param_dict = {
+        "account_name": ACCOUNT_NAME,
+        "api_key": API_KEY
+    }
+    print(main(param_dict))
