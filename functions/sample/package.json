@@ -1,17 +1,16 @@
 {
-  "name": "functions",
+  "name": "sample",
   "version": "1.0.0",
-  "main": "get-dealership.js",
+  "description": "",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@cloudant/cloudant": "^4.5.1",
-    "express": "^4.18.2",
-    "express-basic-auth": "^1.2.1"
-  },
-  "description": ""
+    "express": "^4.18.2"
+  }
 }
