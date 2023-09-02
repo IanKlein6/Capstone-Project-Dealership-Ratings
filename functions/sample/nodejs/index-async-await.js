@@ -28,8 +28,10 @@ main({
     console.error("Error:", error);
 });
 
-
-{
+/**
+ * {
   IAM_API_KEY: "u9YjnNaxZbHBGgxNByVrgLw1T1cPVw6IInZBtqN0TxOm",
   COUCH_URL: "https://4737f811-c189-4729-926f-45de680b14e3-bluemix.cloudantnosqldb.appdomain.cloud"
-}
+} 
+*/
+
