@@ -1,0 +1,33 @@
+
+
+"apikey": phmFku9zELPCHUZjNxHd89tcrCeRnDevAYkWMFMlCBJv
+export IAM_API_KEY="phmFku9zELPCHUZjNxHd89tcrCeRnDevAYkWMFMlCBJv"
+
+export IAM_API_KEY="REPLACED IT WITH GENERATED `apikey`"
+
+"url": "https://4737f811-c189-4729-926f-45de680b14e3-bluemix.cloudantnosqldb.appdomain.cloud"
+export COUCH_URL="https://4737f811-c189-4729-926f-45de680b14e3-bluemix.cloudantnosqldb.appdomain.cloud"
+
+export COUCH_USERNAME='your_username_here'
+"username": "4737f811-c189-4729-926f-45de680b14e3-bluemix"
+
+export COUCH_USERNAME="4737f811-c189-4729-926f-45de680b14e3-bluemix"
+
+
+
+{
+    "apikey": "u9YjnNaxZbHBGgxNByVrgLw1T1cPVw6IInZBtqN0TxOm",
+    "host": "4737f811-c189-4729-926f-45de680b14e3-bluemix.cloudantnosqldb.appdomain.cloud",
+    "iam_apikey_description": "Auto-generated for key crn:v1:bluemix:public:cloudantnosqldb:eu-de:a/8e7434419e274f11be765804e9e21c96:f6dff7fb-7790-4574-ace9-86c016ce17fe:resource-key:b3e40d6e-a56e-4d70-a94f-028dcccbea65",
+    "iam_apikey_name": "Service credentials-1",
+    "iam_role_crn": "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+    "iam_serviceid_crn": "crn:v1:bluemix:public:iam-identity::a/8e7434419e274f11be765804e9e21c96::serviceid:ServiceId-933ecaa6-3221-4e79-8d7c-1299127c4f3e",
+    "url": "https://4737f811-c189-4729-926f-45de680b14e3-bluemix.cloudantnosqldb.appdomain.cloud",
+    "username": "4737f811-c189-4729-926f-45de680b14e3-bluemix"
+  }
+
+
+
+export CLOUDANT_ACCOUNT_NAME="4737f811-c189-4729-926f-45de680b14e3-bluemix"
+export CLOUDANT_API_KEY="u9YjnNaxZbHBGgxNByVrgLw1T1cPVw6IInZBtqN0TxOm"
+
