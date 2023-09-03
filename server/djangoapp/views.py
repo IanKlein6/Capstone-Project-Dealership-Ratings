@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
-# from .models import related models
-# from .restapis import related methods
+from .models import CarDealer, CarMake, CarModel
+from .restapis import get_dealers_from_cf, get_request
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
@@ -32,19 +32,17 @@ def contact(request):
 
 # Create a `login_request` view to handle sign in request
 def login_request(request):
-    context = {}
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['psw']
-        
-        user = authenticate(username=username, password= password)
+        user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('#')
-        else: 
-            return render(request, '#', context)
-    else:
-        return render(request, '#', context)
+            messages.success(request, "Login successfully!")
+            return redirect('djangoapp:index')
+        else:
+            messages.warning(request, "Invalid username or password.")
+            return redirect("djangoapp:index")
     
 
 
@@ -52,7 +50,7 @@ def login_request(request):
 def logout_request(request):
     print("log out the user `{}`".format(request.user.username))
     logout(request)
-    return redirect('#')
+    return redirect('djangoapp:index')
 
 # Create a `registration_request` view to handle sign up request
 def registration_request(request):
@@ -81,9 +79,13 @@ def registration_request(request):
 
 # Update the `get_dealerships` view to render the index page with a list of dealerships
 def get_dealerships(request):
-    context = {}
     if request.method == "GET":
-        return render(request, 'https://ianklein66-3000.theiadocker-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get', context)
+        context = {}
+        url = "https://eu-de.functions.appdomain.cloud/api/v1/web/98f9f7ac-eac8-4b14-8a1b-f707b7642a8b/dealership-package/get-dealership.json"
+        dealerships = get_dealers_from_cf(url)
+        context["dealership_list"] = dealerships
+        return render(request, 'djangoapp/index.html', context)
+
 
 
 # Create a `get_dealer_details` view to render the reviews of a dealer
