@@ -1,5 +1,6 @@
 import requests
 import json
+import logging
 from .models import CarDealer, CarMake, CarModel
 from requests.auth import HTTPBasicAuth
 
@@ -8,6 +9,7 @@ from requests.auth import HTTPBasicAuth
 def get_request(url, **kwargs):
      # If argument contain API KEY
     api_key = kwargs.get("api_key")
+    id = kwargs.get("id")
     print("GET from {} ".format(url))
     try:
         if api_key:
@@ -52,7 +54,7 @@ def get_dealers_from_cf(url, **kwargs):
     # Call get_request with a URL parameter
     json_result = get_request(url)
     #print("\nJSON RESULT",json_result)
-    print("1")
+    logging.warning("This is a debug message")
     if "dealerships" in json_result:
         print("2")
         # Get the list of dealerships from the response
@@ -81,68 +83,20 @@ def get_dealers_from_cf(url, **kwargs):
     return results
 
 
-# def get_dealers_from_cf(url, **kwargs):
-#     results = []
-
-#     # Call get_request with a URL parameter
-#     state = kwargs.get("state")
-#     if state:
-#         json_result = get_request(url, state=state)
-#     else:
-#         json_result = get_request(url)
-
-
-#     if json_result:
-#         # Get the row list in JSON as dealers
-#         dealers = json_result
-#         # For each dealer object
-#         for dealer in dealers:
-#             # Get its content in `doc` object
-#             dealer_doc = dealer["doc"]
-#             # Create a CarDealer object with values in `doc` object
-#             dealer_obj = CarDealer(address=dealer_doc["address"], 
-#                                    city=dealer_doc["city"], 
-#                                    full_name=dealer_doc["full_name"],
-#                                    id=dealer_doc["id"], 
-#                                    lat=dealer_doc["lat"], 
-#                                    long=dealer_doc["long"],
-#                                    short_name=dealer_doc["short_name"],
-#                                    st=dealer_doc["st"], 
-#                                    zip=dealer_doc["zip"])
-#             results.append(dealer_obj)
-
-#     return results
-
-# Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
-# def get_dealer_by_id_from_cf(url, dealerId):
-
-# def get_dealer_by_id_from_cf(url, id):
-#     json_result = get_request(url, id=id)
-#     print('json_result from line 54', json_result)
-#     if json_result:
-#         dealers = json_result[0]
-#     print("line 70 restapis",json_result)
-#     dealer_doc = dealers
-#     print("0th address element line 73", dealers["address"])
-#     dealer_obj = CarDealer(address=dealers["address"], city=dealers["city"],id=dealers["id"], lat=dealers["lat"], long=dealers["long"], full_name=dealers["full_name"],short_name=dealers["short_name"], st=dealers["st"], zip=dealers["zip"])
-#     return dealer_obj
-
 def get_dealer_by_id_from_cf(url, id):
     results = []
 
     # Call get_request with a URL parameter
-    json_result = get_request(url, id=id)
+    json_result = get_request(url, id= id)
 
     if json_result:
         # Get the row list in JSON as dealers
-        dealers = json_result
-        print(dealers,"63")
+        dealers = json_result.get("dealerships", [])
 
         # For each dealer object
-        for dealer in dealers:
-            # Get its content in `doc` object
-            dealer_doc = dealer
-            if dealer_doc["id"] == id:
+        for dealer_doc in dealers:
+            # Ensure the ID is an integer for comparison
+            if int(dealer_doc["id"]) == int(id):
                 # Create a CarDealer object with values in `doc` object
                 dealer_obj = CarDealer(address=dealer_doc["address"], 
                                        city=dealer_doc["city"], 
@@ -155,7 +109,42 @@ def get_dealer_by_id_from_cf(url, id):
                                        zip=dealer_doc["zip"])                    
                 results.append(dealer_obj)
 
-    return results[0]
+    return results[0] if results else None
+
+
+def get_dealer_reviews_from_cf(url, **kwargs):
+    results = []
+    id = kwargs.get("id")
+    if id:
+        json_result = get_request(url, id=id)
+    else:
+        json_result = get_request(url)
+    print(json_result,"96")
+    if json_result:
+        reviews = json_result["data"]["docs"]
+        for dealer_review in reviews:
+            review_obj = DealerReview(dealership=dealer_review["dealership"],
+                                   name=dealer_review["name"],
+                                   purchase=dealer_review["purchase"],
+                                   review=dealer_review["review"])
+            if "id" in dealer_review:
+                review_obj.id = dealer_review["id"]
+            if "purchase_date" in dealer_review:
+                review_obj.purchase_date = dealer_review["purchase_date"]
+            if "car_make" in dealer_review:
+                review_obj.car_make = dealer_review["car_make"]
+            if "car_model" in dealer_review:
+                review_obj.car_model = dealer_review["car_model"]
+            if "car_year" in dealer_review:
+                review_obj.car_year = dealer_review["car_year"]
+            
+            sentiment = analyze_review_sentiments(review_obj.review)
+            print(sentiment)
+            review_obj.sentiment = sentiment
+            results.append(review_obj)
+
+    return results
+
 
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
 # def analyze_review_sentiments(text):
