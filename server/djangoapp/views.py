@@ -12,7 +12,7 @@ import logging
 import json
 
 
-
+print()
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
