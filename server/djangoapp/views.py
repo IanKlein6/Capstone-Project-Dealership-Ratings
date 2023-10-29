@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
-from .models import CarDealer, CarMake, CarModel
-from .restapis import get_dealers_from_cf, get_request, get_dealer_by_id_from_cf, get_dealer_reviews_from_cf
+from .models import CarDealer, CarMake, CarModel, DealerReview, ReviewPost
+from .restapis import get_dealers_from_cf, get_request, get_dealer_by_id_from_cf, get_dealer_reviews_from_cf, post_request
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 def about(request):
     context = {}
     if request.method == "GET":
-        return render(request, 'djangoapp/about.html', context)
+        return render(request, 'djangoapp/about', context)
 
 
 
@@ -30,37 +30,38 @@ def about(request):
 def contact(request):
     context = {}
     if request.method == "GET":
-        return render(request, 'djangoapp/contact.html', context)
+        return render(request, 'djangoapp/contact', context)
     
 
 # Create a `login_request` view to handle sign in request
 def login_request(request):
+    context = {}
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['psw']
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, "Login successfully!")
             return redirect('djangoapp:index')
         else:
-            messages.warning(request, "Invalid username or password.")
-            return redirect("djangoapp:index")
-    
+            context['message'] = "Invalid username or password"
+            return render(request, 'djangoapp/login', context)
+    else:
+        return render(request, 'djangoapp/login', context)
 
 
 # Create a `logout_request` view to handle sign out request
 def logout_request(request):
     print("log out the user `{}`".format(request.user.username))
     logout(request)
-    return redirect('djangoapp:index.html')
+    return redirect('djangoapp:index')
 
 
 # Create a `registration_request` view to handle sign up request
 def registration_request(request):
     context = {}
     if request.method == "GET":
-        return render(request, 'djangoapp/registration.html', context)
+        return render(request, 'djangoapp/registration', context)
     elif request.method == 'POST':
         username = request.POST['username']
         password = request.POST['psw']
@@ -71,14 +72,18 @@ def registration_request(request):
             User.objects.get(username=username)
             user_exist = True
         except:
-            logger.debug("{} is new user".format(username))
+            logger.error("New user")        
         if not user_exist:
-            user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name, password=password)
+            user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name,
+                                            password=password)
+            user.is_superuser = True
+            user.is_staff = True
+            user.save()
             login(request, user)
-            return redirect('djangoapp:index')
+            return redirect("djangoapp:index")
         else:
-            return render(request, 'djangoapp/registration.html', context)
-        
+            messages.warning(request, "The user already exists.")
+            return redirect('djangoapp:registration')
 
 
 #Update the `get_dealerships` view to render the index page with a list of dealerships
@@ -89,7 +94,7 @@ def get_dealerships(request):
         dealerships = get_dealers_from_cf(url)
         context["dealership_list"] = dealerships
         print(dealerships)
-        return render(request, 'djangoapp/index.html', context)
+        return render(request, 'djangoapp/index', context)
 
 
 
@@ -106,7 +111,7 @@ def get_dealer_details(request, id):
         print(reviews)
         context["reviews"] = reviews
         
-        return render(request, 'djangoapp/dealer_details.html', context)
+        return render(request, 'djangoapp/dealer_details', context)
 
 
 # Create a `add_review` view to submit a review
@@ -122,7 +127,7 @@ def add_review(request, id):
         print(cars)
         context["cars"] = cars
         
-        return render(request, 'djangoapp/add_review.html', context)
+        return render(request, 'djangoapp/add_review', context)
     elif request.method == 'POST':
         if request.user.is_authenticated:
             username = request.user.username

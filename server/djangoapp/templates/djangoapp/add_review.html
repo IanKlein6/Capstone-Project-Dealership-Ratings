@@ -11,7 +11,7 @@
 
 </head>
     <body>
-        <form action="{% url 'djangoapp:add_review' id%}" method="post">
+        <form action="{% url 'add_review' dealer.id%}" method="post">
             <textarea class="form-control" id="content" name="content" rows="2" required></textarea>
             <input class="form-check-input" type="checkbox" name="purchasecheck" id="purchasecheck">
             <select name="car" id="car" class="form-select" required>

@@ -1,13 +1,16 @@
+import datetime, uuid, json
 from django.db import models
 from django.utils.timezone import now
+from django.core import serializers
+
 
 
 # Create your models here.
 
 # <HINT> Create a Car Make model `
 class CarMake(models.Model):
-    name = models.CharField(max_length=255)
-    description = models.TextField(blank=True, null=True)
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=500, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -55,9 +58,9 @@ class CarDealer:
         self.zip = zip
 
     def __str__(self):
-        return "Dealer name: " + self.full_name
+        return self.full_name + ", " + self.st
 
-# <HINT> Create a plain Python class `DealerReview` to hold review data
+# Create a plain Python class `DealerReview` to hold review data
 class DealerReview:
 
     def __init__(self, dealership, name, purchase, review):
@@ -79,8 +82,8 @@ class DealerReview:
 
     def to_json(self):
         return json.dumps(self, default=lambda o: o.__dict__,
-                            sort_keys=True, indent=4)
-                            
+                          sort_keys=True, indent=4)
+ 
 
 class ReviewPost:
 
