@@ -11,56 +11,52 @@
     <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
     <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    
 </head>
 
-    <body>
-    
-          
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="/djangoapp">Best Cars</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/djangoapp">Home</a>
+<body> 
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/djangoapp">Best Cars</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/djangoapp">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/djangoapp/about">About Page</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/djangoapp/contact">Contact Us</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">{{ user.first_name }} ({{ user.username }})</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/djangoapp/about">About Page</a>
+                        <a class="nav-link" href="#">Logout</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <form class="form-inline my-2 my-lg-0" action="#" method="post">
+                            {% csrf_token %}
+                            <input type="text" class="form-control mr-sm-2" placeholder="Username" name="username">
+                            <input type="password" class="form-control mr-sm-2" placeholder="Password" name="psw">
+                            <button class="btn btn-success my-2 my-sm-0" type="submit">Login</button>
+                        </form>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/djangoapp/contact">Contact Us</a>
+                        <a class="btn btn-primary my-2 my-sm-0" href="/djangoapp/registration">Sign Up</a>
                     </li>
-                </ul>
-                <ul class="navbar-nav">
-                    {% if user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">{{ user.first_name }}({{ user.username }})</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Logout</a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <form class="form-inline my-2 my-lg-0" action="#" method="post">
-                                {% csrf_token %}
-                                <input type="text" class="form-control mr-sm-2" placeholder="Username" name="username">
-                                <input type="password" class="form-control mr-sm-2" placeholder="Password" name="psw">
-                                <button class="btn btn-success my-2 my-sm-0" type="submit">Login</button>
-                            </form>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-primary my-2 my-sm-0" href="/djangoapp/registration">Sign Up</a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </div>
-        </nav>
-        
-    
-    <!--Add a dealer table here -->
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Add a dealer table here -->
     <table class="table" id="table" data-filter-control="true">
         <thead>
             <tr>
@@ -75,23 +71,22 @@
         <tbody>
             {% for dealer in dealership_list %}
                 <tr>
-                    <td><a href="{% url 'djangoapp:dealer_details' dealer.id %}">{{dealer.id}}</a></td>
-                    <td>{{dealer.full_name}}</td>
-                    <td>{{dealer.city}}</td>
-                    <td>{{dealer.address}}</td>
-                    <td>{{dealer.zip}}</td>
-                    <td>{{dealer.st}}</td>
+                    <td><a href="{% url 'djangoapp:dealer_details' dealer.id %}">{{ dealer.id }}</a></td>
+                    <td>{{ dealer.full_name }}</td>
+                    <td>{{ dealer.city }}</td>
+                    <td>{{ dealer.address }}</td>
+                    <td>{{ dealer.zip }}</td>
+                    <td>{{ dealer.st }}</td>
                 </tr>
             {% endfor %}
-         </tbody>
+        </tbody>
     </table>
-        
     
-                    <!-- turn-on filter control for the table -->
-            <script>
-                $(function(){
-                    $('#table').bootstrapTable()
-                })
-            </script>
-    </body>
+    <!-- Turn on filter control for the table -->
+    <script>
+        $(function(){
+            $('#table').bootstrapTable()
+        })
+    </script>
+</body>
 </html>

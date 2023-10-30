@@ -6,28 +6,28 @@ from . import views
 app_name = 'djangoapp'
 urlpatterns = [
 
-    # path for about view
+    # Path for the about view
     path('about/', view=views.about, name='about'),
 
-    # path for contact us view
-    path ('contact/', view=views.contact, name='contact'),
+    # Path for the contact us view
+    path('contact/', view=views.contact, name='contact'),
 
-    # path for registration
-    path ('registration/', view=views.registration_request, name='registration'),
+    # Path for registration
+    path('registration/', view=views.registration_request, name='registration'),
 
-    # path for login
-    path ('login/', view=views.login_request, name='login'),
+    # Path for login
+    path('login/', view=views.login_request, name='login'),
 
-    # path for logout
-    path ('logout/', view=views.logout_request, name='logout'),
+    # Path for logout
+    path('logout/', view=views.logout_request, name='logout'),
 
-    # path for Index
-    path ('', view=views.get_dealerships, name='index'),
+    # Path for index
+    path('', view=views.get_dealerships, name='index'),
 
-    # path for dealer reviews view
+    # Path for dealer reviews view
     path('dealer/<int:id>/', views.get_dealer_details, name='dealer_details'),
 
-    # path for add a review view
+    # Path for add a review view
     path('dealer/review/<int:id>/', views.add_review, name='add_review'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
