@@ -6,6 +6,8 @@ from .models import CarDealer, CarMake, CarModel, DealerReview, ReviewPost
 from .restapis import get_dealers_from_cf, get_request, get_dealer_by_id_from_cf, get_dealer_reviews_from_cf, post_request
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from django.contrib import messages
 from datetime import datetime
 import logging
@@ -22,7 +24,7 @@ logger = logging.getLogger(__name__)
 def about(request):
     context = {}
     if request.method == "GET":
-        return render(request, 'djangoapp/about', context)
+        return render(request, 'djangoapp/about.html', context)
 
 
 
@@ -30,7 +32,7 @@ def about(request):
 def contact(request):
     context = {}
     if request.method == "GET":
-        return render(request, 'djangoapp/contact', context)
+        return render(request, 'djangoapp/contact.html', context)
     
 
 # Create a `login_request` view to handle sign in request
@@ -47,7 +49,7 @@ def login_request(request):
             context['message'] = "Invalid username or password"
             return render(request, 'djangoapp/login', context)
     else:
-        return render(request, 'djangoapp/login', context)
+        return render(request, 'djangoapp/login.html', context)
 
 
 # Create a `logout_request` view to handle sign out request
@@ -94,7 +96,7 @@ def get_dealerships(request):
         dealerships = get_dealers_from_cf(url)
         context["dealership_list"] = dealerships
         print(dealerships)
-        return render(request, 'djangoapp/index', context)
+        return render(request, 'djangoapp/index.html', context)
 
 
 
@@ -105,13 +107,14 @@ def get_dealer_details(request, id):
         dealer_url = "https://eu-de.functions.appdomain.cloud/api/v1/web/98f9f7ac-eac8-4b14-8a1b-f707b7642a8b/dealership-package/get-dealership"
         dealer = get_dealer_by_id_from_cf(dealer_url, id= id)
         context["dealer"] = dealer
+        print("1")
     
         review_url = "https://eu-de.functions.appdomain.cloud/api/v1/web/98f9f7ac-eac8-4b14-8a1b-f707b7642a8b/dealership-package/get-review"
-        reviews = get_dealer_reviews_from_cf(review_url, id= id)
-        print(reviews)
+        reviews = get_dealer_reviews_from_cf(review_url, id= id)  
         context["reviews"] = reviews
-        
-        return render(request, 'djangoapp/dealer_details', context)
+        print("2")
+
+        return render(request, 'djangoapp/dealer_details.html', context)
 
 
 # Create a `add_review` view to submit a review
@@ -121,13 +124,14 @@ def add_review(request, id):
     dealer_url = "https://eu-de.functions.appdomain.cloud/api/v1/web/98f9f7ac-eac8-4b14-8a1b-f707b7642a8b/dealership-package/get-dealership"
     dealer = get_dealer_by_id_from_cf(dealer_url, id= id)
     context["dealer"] = dealer
+
     if request.method == 'GET':
         # Get cars for the dealer
         cars = CarModel.objects.all()
         print(cars)
         context["cars"] = cars
         
-        return render(request, 'djangoapp/add_review', context)
+        return render(request, 'djangoapp/add_review.html', context)
     elif request.method == 'POST':
         if request.user.is_authenticated:
             username = request.user.username
@@ -153,5 +157,6 @@ def add_review(request, id):
             new_payload["review"] = payload
             review_post_url = "https://eu-de.functions.appdomain.cloud/api/v1/web/98f9f7ac-eac8-4b14-8a1b-f707b7642a8b/dealership-package/post-review"
             post_request(review_post_url, new_payload, id= id)
+
         return redirect("djangoapp:dealer_details", id= id)
 

@@ -143,3 +143,7 @@ LOGGING = {
         },
     },
 }
+
+
+# Set the default primary key type to BigAutoField (for PostgreSQL and similar databases)
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

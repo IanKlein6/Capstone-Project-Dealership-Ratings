@@ -7,6 +7,16 @@ from django.core import serializers
 
 # Create your models here.
 
+
+class TestModel(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+
 # <HINT> Create a Car Make model `
 class CarMake(models.Model):
     name = models.CharField(max_length=50)
@@ -16,7 +26,7 @@ class CarMake(models.Model):
         return self.name
         
 
-# <HINT> Create a Car Model model `
+# CarModel model
 class CarModel(models.Model):
     car_make = models.ForeignKey(CarMake, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
@@ -27,10 +37,14 @@ class CarModel(models.Model):
         ('SUV', 'SUV'),
         ('WAGON', 'Wagon'),
     ]
-    type_car = models.CharField(max_length=50, choices=TYPE_CHOICES, default='SEDAN')
-    year = models.DateField()
+    
+    YEAR_CHOICES = [(year, year) for year in range(1950, 2024)]  # Generates a list of (year, year) pairs
 
-    def __str__ (self):
+    type_car = models.CharField(max_length=50, choices=TYPE_CHOICES, default='SEDAN')
+    
+    year = models.IntegerField(choices=YEAR_CHOICES)
+
+    def __str__(self):
         return self.name
 
 
