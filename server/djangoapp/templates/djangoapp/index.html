@@ -53,12 +53,12 @@
                         <a class="nav-link font-weight-bold" href="#">{{ user.first_name }} ({{ user.username }})</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-primary my-2 my-sm-0" href="#">Logout</a>
+                        <a class="btn btn-primary my-2 my-sm-0" href="{% url 'djangoapp:logout' %}">Logout</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
                         <div id="login-form"></div>
-                            <form class="form-inline my-2 my-lg-0" action="#" method="post">
+                            <form class="form-inline my-2 my-lg-0" action="{% url 'djangoapp:login' %}" method="post">
                                 {% csrf_token %}
                                 <input type="text" class="form-control mr-sm-2" placeholder="Username" name="username" required>
                                 <input type="password" class="form-control mr-sm-2" placeholder="Password" name="psw" required>
