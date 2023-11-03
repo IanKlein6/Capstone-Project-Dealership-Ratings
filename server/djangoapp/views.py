@@ -40,11 +40,13 @@ def login_request(request):
         if user is not None:
             login(request, user)
             return redirect('djangoapp:index')
-        else:
-            context['message'] = "Invalid username or password"
-            return render(request, 'djangoapp/login.html', context)
-    else:
-        return render(request, 'djangoapp/login.html', context)
+        
+    # Removed because Java script handles empty erros it in the html files
+    #     else:
+    #         context['message'] = "Invalid username or password"
+    #         return render(request, 'djangoapp/login.html', context)
+    # else:
+    #     return render(request, 'djangoapp/login.html', context)
 
 def logout_request(request):
     if request.method == "GET":
