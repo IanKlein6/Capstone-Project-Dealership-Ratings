@@ -41,12 +41,14 @@
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <form class="form-inline my-2 my-lg-0" action="#" method="post">
-                            {% csrf_token %}
-                            <input type="text" class="form-control mr-sm-2" placeholder="Username" name="username">
-                            <input type="password" class="form-control mr-sm-2" placeholder="Password" name="psw">
-                            <button class="btn btn-success my-2 my-sm-0" type="submit">Login</button>
-                        </form>
+                        <div id="login-form"></div>
+                            <form class="form-inline my-2 my-lg-0" action="#" method="post">
+                                {% csrf_token %}
+                                <input type="text" class="form-control mr-sm-2" placeholder="Username" name="username" required>
+                                <input type="password" class="form-control mr-sm-2" placeholder="Password" name="psw" required>
+                                <button class="btn btn-success my-2 my-sm-0" type="submit" data-toggle="modal" data-target="#loginErrorModal">Login</button>
+                            </form>
+                        </div>
                     </li>
                     <li class="nav-item">
                         <a class="btn btn-primary my-2 my-sm-0" href="/djangoapp/registration">Sign Up</a>
@@ -88,5 +90,40 @@
             $('#table').bootstrapTable()
         })
     </script>
+
+    <!-- Java display error modal if login fields empty -->
+    <script>
+        $(document).ready(function() {
+            $('#login-form button[type="submit"]').click(function(event) {
+                var username = $('input[name="username"]').val();
+                var password = $('input[name="psw"]').val();
+                if (username === '' || password === '') {
+                    event.preventDefault(); // Prevent form submission
+                    $('#loginErrorModal').modal('show');
+                }
+            });
+        });
+    </script>
+
+    <!-- Bootstrap modal for login error message -->
+    <div class="modal fade" id="loginErrorModal" tabindex="-1" role="dialog" aria-labelledby="loginErrorModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginErrorModalLabel">Error</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Invalid username or password. Please fill in the login fields.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
