@@ -7,7 +7,8 @@ from .restapis import (
     get_request,
     get_dealer_by_id_from_cf,
     get_dealer_reviews_from_cf,
-    post_request
+    post_request,
+    analyze_review_sentiments
 )
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required

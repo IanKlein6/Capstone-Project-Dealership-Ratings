@@ -9,6 +9,7 @@ from requests.auth import HTTPBasicAuth
 # Function to make a GET request
 def get_request(url, **kwargs):
     api_key = kwargs.get("api_key")
+    print(api_key)
     print("GET from {} ".format(url))
     
     try:
@@ -81,7 +82,7 @@ def get_dealer_by_id_from_cf(url, id):
         )
     return None
 
-# Function to get dealer reviews from a Cloudant database
+#Function to get dealer reviews from a Cloudant database
 def get_dealer_reviews_from_cf(url, **kwargs):
     results = []
     id = kwargs.get("id")
@@ -107,18 +108,23 @@ def get_dealer_reviews_from_cf(url, **kwargs):
             review_obj.car_model = dealer_review.get("car_model")
             review_obj.car_year = dealer_review.get("car_year")
 
+
+            sentiment = analyze_review_sentiments(review_obj.review)
+            review_obj.sentiment = sentiment
             results.append(review_obj)
+           
     return results
 
-# Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
+
 def analyze_review_sentiments(text):
-    url = "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/76dec49e-a13e-4485-9ead-c0cf3c8c0d8d"
-    api_key = "0dgzxDi50V-YkUenmzIocXUy8skAIeQcPwc6Rt-iLOuU"
+    url = "https://api.eu-de.natural-language-understanding.watson.cloud.ibm.com/instances/70760587-a8fc-490e-bb9a-9337cb87aedc"
+    api_key = "54aF_M40ZvqpJJGelENsUqwl4-xQ6ttgRKY5OTunfT5W"
     authenticator = IAMAuthenticator(api_key)
     natural_language_understanding = NaturalLanguageUnderstandingV1(version='2021-08-01',authenticator=authenticator)
     natural_language_understanding.set_service_url(url)
     response = natural_language_understanding.analyze( text=text+"hello hello hello",features=Features(sentiment=SentimentOptions(targets=[text+"hello hello hello"]))).get_result()
     label=json.dumps(response, indent=2)
     label = response['sentiment']['document']['label']
+    
     
     return(label)
