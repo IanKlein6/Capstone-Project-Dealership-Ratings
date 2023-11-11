@@ -1,3 +1,8 @@
+### When running application add /djangoapp inorder to access application 
+
+
+
+
 # Final Project Template
 
 The final project for this course has several steps that you must complete. 
