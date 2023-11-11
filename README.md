@@ -1,16 +1,19 @@
-### When running application add /djangoapp inorder to access application 
+# Description
+Final Capstone project for the IBM Full Stack Software Developer Specialization. 
+App takes Dealership data, stores it in the IBM Database, displays a list of dealerships where users can submit reviews of the dealerships to increase or decrease their ratings. Reviews are processed by IBM Watson Natural Language Understanding to decipher whether the review is positive or negative. Uses Django models for the Backend, JavaScript with HTML and CSS for the Frontend and APIs to connect to IBM Cloud. Containerization and App Deployment through Docker and Kubernetes.  
+
+## Running Application:
+When running application add /djangoapp inorder to access application 
 
 
-
-
-# Final Project Template
+### Final Project Template
 
 The final project for this course has several steps that you must complete. 
 To give you an overview of the whole project, all the high-level steps are listed below. 
 The project is then divided into several smaller labs that give the detailed instructions for each step. 
 You must complete all the labs to successfully complete the project.
 
-## Project Breakdown
+#### Project Breakdown
 
 **Prework: Sign up for IBM Cloud account and create a Watson Natural language Understanding service**
 1. Create an IBM cloud account if you don't have one already.
