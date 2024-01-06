@@ -8,6 +8,8 @@ This Capstone project, part of the IBM Full Stack Software Developer Specializat
 
 View images of the Dealership Application under [Project Images](project_images/)
 
+Image quality reduced inorder to save file space.
+
 ![Home Page](project_images/index_page.png)
 
 
