@@ -6,7 +6,9 @@ This Capstone project, part of the IBM Full Stack Software Developer Specializat
 
 ## Application Images
 
-Feel Free to view more images of the Application under [Project Images](project_images/)
+View images of the Dealership Application under [Project Images](project_images/)
+
+![Home Page](project_images/index_page.png)
 
 
 ## Running the Application with Docker
