@@ -4,6 +4,11 @@
 
 This Capstone project, part of the IBM Full Stack Software Developer Specialization, showcases a dealership management application. It integrates dealership data storage with IBM Cloud Database and utilizes IBM Watson's Natural Language Understanding for review sentiment analysis. The project features Django for backend operations, JavaScript with HTML and CSS for the frontend, and API connections to IBM Cloud. The application is containerized using Docker and deployed through Kubernetes.
 
+## Application Images
+
+Feel Free to view more images of the Application under [Project Images](project_images/)
+
+
 ## Running the Application with Docker
 
 To run the application using Docker:
