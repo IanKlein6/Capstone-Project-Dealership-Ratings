@@ -1,45 +1,52 @@
-# Description
-Final Capstone project for the IBM Full Stack Software Developer Specialization. 
-App takes Dealership data, stores it in the IBM Database, displays a list of dealerships where users can submit reviews of the dealerships to increase or decrease their ratings. Reviews are processed by IBM Watson Natural Language Understanding to decipher whether the review is positive or negative. Uses Django models for the Backend, JavaScript with HTML and CSS for the Frontend and APIs to connect to IBM Cloud. Containerization and App Deployment through Docker and Kubernetes.  
+# Capstone Project - IBM Full Stack Software Developer 
 
-## Running Application:
-When running application add /djangoapp inorder to access application 
+## Description
 
+This Capstone project, part of the IBM Full Stack Software Developer Specialization, showcases a dealership management application. It integrates dealership data storage with IBM Cloud Database and utilizes IBM Watson's Natural Language Understanding for review sentiment analysis. The project features Django for backend operations, JavaScript with HTML and CSS for the frontend, and API connections to IBM Cloud. The application is containerized using Docker and deployed through Kubernetes.
 
-### Final Project Template
+## Running the Application with Docker
 
-The final project for this course has several steps that you must complete. 
-To give you an overview of the whole project, all the high-level steps are listed below. 
-The project is then divided into several smaller labs that give the detailed instructions for each step. 
-You must complete all the labs to successfully complete the project.
+To run the application using Docker:
 
-#### Project Breakdown
+1. **Build the Docker Image**:
+   - In the project's root directory (where the Dockerfile is located), build the Docker image:
+     ```
+     docker build -t ibm-capstone-project .
+     ```
 
-**Prework: Sign up for IBM Cloud account and create a Watson Natural language Understanding service**
-1. Create an IBM cloud account if you don't have one already.
-2. Create an instance of the Natural Language Understanding (NLU) service.
+2. **Run the Docker Container**:
+   - Start the container, mapping the container's port 8000 to the host's port 8000:
+     ```
+     docker run -p 8000:8000 ibm-capstone-project
+     ```
 
-**Fork the project Github repository with a project then build and deploy the template project**
-1. Fork the repository in your account
-2. Clone the repository in the theia lab environment
-3. Create static pages to finish the user stories
-4. Deploy the application on IBM Cloud
+3. **Accessing the Application**:
+   - Open `http://localhost:8000/djangoapp` in a web browser. Note the `/djangoapp` at the end of the URL.
 
-**Add user management to the application**
-1. Implement user management using the Django user authentication system.
-2. Set up continuous integration and delivery
+## Project Breakdown
 
-**Implement backend services**
-1. Create cloud functions to manage dealers and reviews
-2. Create Django models and views to manage car model and car make
-3. Create Django proxy services and views to integrate dealers, reviews, and cars together
- 
-**Add dynamic pages with Django templates**
-1. Create a page that shows all the dealers
-2. Create a page that show reviews for a selected dealer
-3. Create a page that let's the end user add a review for a selected dealer
+### Prework: IBM Cloud Setup and Watson NLU Service
+1. Create an IBM cloud account.
+2. Set up an instance of the Natural Language Understanding (NLU) service.
 
-**Containerize your application**
-1. Add deployment artifacts to your application
-2. Deploy your application
-# Capstone
+### Building and Deploying the Application
+1. Develop static pages fulfilling user stories.
+2. Deploy the application on IBM Cloud for live interaction.
+
+### Implementing User Management
+1. Utilize Django's authentication system for user management.
+2. Set up continuous integration and continuous deployment (CI/CD) pipelines.
+
+### Backend Services Development
+1. Develop cloud functions for dealers and reviews management.
+2. Create Django models and views for car models and makes.
+3. Integrate dealerships, reviews, and car data using Django views.
+
+### Dynamic Web Pages with Django Templates
+1. Create a page listing all dealerships.
+2. Develop a page to display reviews for a specific dealer.
+3. Implement functionality for users to add reviews for dealerships.
+
+### Containerization and Final Deployment
+1. Prepare the application for deployment by adding necessary artifacts.
+2. Deploy the application using Docker and Kubernetes.
